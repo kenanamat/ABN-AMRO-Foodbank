@@ -6,6 +6,7 @@
 
 html {
   overflow-x: clip;
+  background-color: #011628;
 }
 * {
   font-family: "Open Sans", sans-serif;
