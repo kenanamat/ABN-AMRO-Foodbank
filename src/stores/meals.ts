@@ -3,15 +3,12 @@ import { ISearchResponse } from "../types"
 import { computed, ref } from "vue"
 
 export const useMealStore = defineStore("meals", () => {
-  const meals = ref<ISearchResponse>()
+  const searchedMeals = ref<{ [searchTerm: string]: ISearchResponse }>({})
 
   const fetchSearchMeal = async (searchTerm: string) => {
-    const url = new URL("https://www.themealdb.com/api/json/v1/1/search.php")
-    url.searchParams.append("s", searchTerm)
-
-    return fetch(url)
+    return fetch(`/api/search.php?s=${searchTerm}`)
       .then((response) => {
-        response.json().then((data) => (meals.value = data))
+        response.json().then((data) => (searchedMeals.value[searchTerm] = data))
       })
       .catch((error) => {
         console.log(`Failed to fetch meals: ${error}`)
@@ -20,13 +17,13 @@ export const useMealStore = defineStore("meals", () => {
 
   const searchMeal = (searchTerm: string) =>
     computed(() => {
-      if (meals.value !== undefined) return meals.value
+      if (searchedMeals.value[searchTerm] !== undefined)
+        return searchedMeals.value[searchTerm]
       fetchSearchMeal(searchTerm)
-      return meals.value
+      return searchedMeals.value[searchTerm]
     })
 
   return {
-    meals,
     searchMeal,
   }
 })
