@@ -6,7 +6,8 @@
 
 html {
   overflow-x: clip;
-  background-color: #011628;
+  background-image: linear-gradient(#234343, #152828);
+  min-height: 100%;
 }
 * {
   font-family: "Open Sans", sans-serif;

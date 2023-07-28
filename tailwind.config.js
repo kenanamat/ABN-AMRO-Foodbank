@@ -8,9 +8,14 @@ export default {
         "primary-hover": "#42807a",
         secondary: "#f5d546",
         "secondary-hover": "#dfc24c",
-        bg: "#011628",
+        "dark-green": "#234343",
+        "black-green": "#152828",
+        "abn-gray": "#939393",
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require("@tailwindcss/forms"),
+    require("@tailwindcss/aspect-ratio"),
+  ],
 }
