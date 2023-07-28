@@ -8,12 +8,14 @@ const mobileMenuOpen = ref(false)
 </script>
 
 <template>
-  <header class="bg-white">
+  <header class="bg-white relative z-10">
+    <!-- Desktop menu -->
     <nav
       class="mx-auto flex max-w-7xl items-center justify-between p-4 lg:px-8"
       aria-label="Global"
     >
       <NavigationLogo />
+      <!-- Mobile menu button -->
       <div class="flex lg:hidden">
         <button
           type="button"
@@ -24,12 +26,14 @@ const mobileMenuOpen = ref(false)
           <Bars3Icon class="h-6 w-6" aria-hidden="true" />
         </button>
       </div>
+      <!-- Menu items -->
       <div class="hidden lg:flex lg:gap-x-12">
         <a href="#" class="text-sm font-semibold leading-6 text-gray-900">
           Log in
         </a>
       </div>
     </nav>
+    <!-- Mobile menu -->
     <Dialog
       as="div"
       class="lg:hidden"
@@ -41,6 +45,7 @@ const mobileMenuOpen = ref(false)
       >
         <div class="flex items-center justify-between p-4 bg-white">
           <NavigationLogo class="sm:hidden" />
+          <!-- Close menu -->
           <button
             type="button"
             class="-m-2.5 rounded-md p-2.5 text-gray-700 ml-auto"
@@ -51,6 +56,7 @@ const mobileMenuOpen = ref(false)
           </button>
         </div>
         <nav class="mt-6 p-6">
+          <!-- Menu items -->
           <div class="-my-6 divide-y divide-gray-500/10">
             <a
               href="#"
