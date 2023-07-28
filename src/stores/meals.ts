@@ -5,15 +5,7 @@ import axios from "axios"
 
 export const useMealStore = defineStore("meals", () => {
   const searchedMeals = ref<{ [searchTerm: string]: ISearchResponse }>({})
-
-  // const fetchSearchMeal = async (searchTerm: string) => {
-  //   try {
-  //     const response = await axios.get(`/api/search.php?s=${searchTerm}`)
-  //     searchedMeals.value[searchTerm] = response.data
-  //   } catch (error) {
-  //     console.log(`Failed to fetch meals: ${error}`)
-  //   }
-  // }
+  const randomMeals = ref<ISearchResponse[]>([])
 
   const fetchSearchMeal = (searchTerm: string) => {
     return new Promise<void>(async (resolve, reject) => {
@@ -38,9 +30,36 @@ export const useMealStore = defineStore("meals", () => {
       return searchedMeals.value[searchTerm]
     })
 
+  const fetchRandomMeal = () => {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        const response = await axios.get("/api/random.php")
+        randomMeals.value.push(response.data.meals[0])
+        resolve()
+      } catch (error) {
+        console.log(`Failed to fetch meals: ${error}`)
+        reject(error)
+      }
+    })
+  }
+
+  const set3RandomMeals = async () => {
+    while (randomMeals.value.length < 3) {
+      await fetchRandomMeal()
+    }
+  }
+
+  const get3RandomMeals = () =>
+    computed(() => {
+      if (randomMeals.value.length >= 3) return randomMeals.value
+      set3RandomMeals()
+      return randomMeals.value
+    })
+
   return {
     searchMeal,
     searchedMeals,
     fetchSearchMeal,
+    get3RandomMeals,
   }
 })

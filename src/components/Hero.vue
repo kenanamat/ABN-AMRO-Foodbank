@@ -1,28 +1,11 @@
 <script setup lang="ts">
-const collections = [
-  {
-    name: "Women's",
-    href: "#",
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/home-page-04-collection-01.jpg",
-    imageAlt: "Woman wearing a comfortable cotton t-shirt.",
-  },
-  {
-    name: "Men's",
-    href: "#",
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/home-page-04-collection-02.jpg",
-    imageAlt: "Man wearing a comfortable and casual cotton t-shirt.",
-  },
-  {
-    name: "Desk Accessories",
-    href: "#",
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/home-page-04-collection-03.jpg",
-    imageAlt:
-      "Person sitting at a wooden desk with paper note organizer, pencil and tablet.",
-  },
-]
+import { useMealStore } from '../stores/meals';
+
+const mealStore = useMealStore()
+const randomMeals = mealStore.get3RandomMeals()
+
+console.log(randomMeals.value);
+
 </script>
 
 <template>
@@ -63,7 +46,7 @@ const collections = [
       <div
         class="mx-auto grid max-w-md grid-cols-1 gap-y-6 px-4 sm:max-w-7xl sm:grid-cols-3 sm:gap-x-6 sm:gap-y-0 sm:px-6 lg:gap-x-8 lg:px-8"
       >
-        <div
+        <!-- <div
           v-for="collection in collections"
           :key="collection.name"
           class="group relative h-96 rounded-lg bg-white shadow-xl sm:aspect-h-5 sm:aspect-w-4 sm:h-auto"
@@ -100,7 +83,7 @@ const collections = [
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
     </section>
   </div>
