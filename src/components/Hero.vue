@@ -46,7 +46,7 @@ const randomMeals = mealStore.get3RandomMeals()
         <div
           v-for="meal in randomMeals"
           :key="meal.idMeal"
-          class="group relative h-96 rounded-lg shadow-xl sm:aspect-h-5 sm:aspect-w-4 sm:h-auto border-primary border"
+          class="group relative h-96 rounded-lg shadow-xl sm:aspect-h-5 sm:aspect-w-4 sm:h-auto border-primary border randomMeal"
         >
           <div
             aria-hidden="true"

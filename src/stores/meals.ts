@@ -44,14 +44,15 @@ export const useMealStore = defineStore("meals", () => {
   }
 
   const set3RandomMeals = async () => {
-    while (randomMeals.value.length < 2) {
+    while (randomMeals.value.length < 3) {
+      // No duplicate check since the chance is less than 1.02%
       await fetchRandomMeal()
     }
   }
 
   const get3RandomMeals = () =>
     computed(() => {
-      if (randomMeals.value.length >= 3) return randomMeals.value
+      if (randomMeals.value.length > 0) return randomMeals.value
       set3RandomMeals()
       return randomMeals.value
     })
@@ -60,6 +61,9 @@ export const useMealStore = defineStore("meals", () => {
     searchMeal,
     searchedMeals,
     fetchSearchMeal,
+    randomMeals,
+    fetchRandomMeal,
+    set3RandomMeals,
     get3RandomMeals,
   }
 })
