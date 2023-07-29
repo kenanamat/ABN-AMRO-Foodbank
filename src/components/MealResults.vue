@@ -20,11 +20,11 @@ const mealStore = useMealStore()
         />
       </div>
       <div class="min-w-0 flex-1">
-        <a href="#" class="focus:outline-none">
+        <router-link :to="`/meal/${meal.idMeal}`" class="focus:outline-none">
           <span class="absolute inset-0" aria-hidden="true" />
           <p class="text-sm font-medium text-gray-900">{{ meal.strMeal }}</p>
           <p class="truncate text-sm text-gray-500">{{ meal.strCategory }}</p>
-        </a>
+        </router-link>
       </div>
     </div>
   </div>

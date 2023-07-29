@@ -4,7 +4,6 @@ import { createPinia, setActivePinia } from "pinia"
 import MockAdapter from "axios-mock-adapter"
 import axios from "axios"
 import { describe, beforeEach, it, expect, afterEach, vi } from "vitest"
-import flushPromises from "flush-promises"
 
 var mock = new MockAdapter(axios)
 
