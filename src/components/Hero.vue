@@ -1,11 +1,8 @@
 <script setup lang="ts">
-import { useMealStore } from '../stores/meals';
+import { useMealStore } from "../stores/meals"
 
 const mealStore = useMealStore()
 const randomMeals = mealStore.get3RandomMeals()
-
-console.log(randomMeals.value);
-
 </script>
 
 <template>
@@ -46,44 +43,41 @@ console.log(randomMeals.value);
       <div
         class="mx-auto grid max-w-md grid-cols-1 gap-y-6 px-4 sm:max-w-7xl sm:grid-cols-3 sm:gap-x-6 sm:gap-y-0 sm:px-6 lg:gap-x-8 lg:px-8"
       >
-        <!-- <div
-          v-for="collection in collections"
-          :key="collection.name"
-          class="group relative h-96 rounded-lg bg-white shadow-xl sm:aspect-h-5 sm:aspect-w-4 sm:h-auto"
+        <div
+          v-for="meal in randomMeals"
+          :key="meal.idMeal"
+          class="group relative h-96 rounded-lg shadow-xl sm:aspect-h-5 sm:aspect-w-4 sm:h-auto border-primary border"
         >
-          <div>
+          <div
+            aria-hidden="true"
+            class="absolute inset-0 overflow-hidden rounded-lg"
+          >
             <div
-              aria-hidden="true"
-              class="absolute inset-0 overflow-hidden rounded-lg"
+              class="absolute inset-0 overflow-hidden group-hover:opacity-75"
             >
-              <div
-                class="absolute inset-0 overflow-hidden group-hover:opacity-75"
-              >
-                <img
-                  :src="collection.imageSrc"
-                  :alt="collection.imageAlt"
-                  class="h-full w-full object-cover object-center"
-                />
-              </div>
-              <div
-                class="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-50"
+              <img
+                v-if="meal.strMealThumb"
+                :src="meal.strMealThumb"
+                :alt="`Image of ${meal.strMeal}`"
+                class="h-full w-full object-cover object-center"
               />
             </div>
-            <div class="absolute inset-0 flex items-end rounded-lg p-6">
-              <div>
-                <p aria-hidden="true" class="text-sm text-white">
-                  Shop the collection
-                </p>
-                <h3 class="mt-1 font-semibold text-white">
-                  <a :href="collection.href">
-                    <span class="absolute inset-0" />
-                    {{ collection.name }}
-                  </a>
-                </h3>
-              </div>
+            <div
+              class="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-50"
+            />
+          </div>
+          <div class="absolute inset-0 flex items-end rounded-lg p-6">
+            <div>
+              <p aria-hidden="true" class="text-sm text-white">Shop the meal</p>
+              <h3 class="mt-1 font-semibold text-white">
+                <a href="#">
+                  <span class="absolute inset-0" />
+                  {{ meal.strMeal }}
+                </a>
+              </h3>
             </div>
           </div>
-        </div> -->
+        </div>
       </div>
     </section>
   </div>

@@ -1,11 +1,11 @@
 import { defineStore } from "pinia"
-import { ISearchResponse } from "../types"
+import { IMeal, ISearchResponse } from "../types"
 import { computed, ref } from "vue"
 import axios from "axios"
 
 export const useMealStore = defineStore("meals", () => {
   const searchedMeals = ref<{ [searchTerm: string]: ISearchResponse }>({})
-  const randomMeals = ref<ISearchResponse[]>([])
+  const randomMeals = ref<IMeal[]>([])
 
   const fetchSearchMeal = (searchTerm: string) => {
     return new Promise<void>(async (resolve, reject) => {
@@ -44,7 +44,7 @@ export const useMealStore = defineStore("meals", () => {
   }
 
   const set3RandomMeals = async () => {
-    while (randomMeals.value.length < 3) {
+    while (randomMeals.value.length < 2) {
       await fetchRandomMeal()
     }
   }

@@ -11,7 +11,7 @@ const mobileMenuOpen = ref(false)
   <header class="bg-white relative z-10">
     <!-- Desktop menu -->
     <nav
-      class="mx-auto flex max-w-7xl items-center justify-between p-4 lg:px-8"
+      class="mx-auto flex max-w-7xl items-center justify-between p-4 pt-6 lg:px-8"
       aria-label="Global"
     >
       <NavigationLogo />
@@ -43,7 +43,7 @@ const mobileMenuOpen = ref(false)
       <DialogPanel
         class="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-[linear-gradient(135deg,#005e5d_0,#00877d_58%,#00756f_58%,#009185_100%)] sm:max-w-sm sm:ring-1 sm:ring-gray-900/10"
       >
-        <div class="flex items-center justify-between p-4 bg-white">
+        <div class="flex items-center justify-between p-4 pt-6 bg-white">
           <NavigationLogo class="sm:hidden" />
           <!-- Close menu -->
           <button
