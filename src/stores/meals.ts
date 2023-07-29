@@ -1,19 +1,20 @@
 import { defineStore } from "pinia"
-import { IMeal, ISearchResponse } from "../types"
+import { IMeal } from "../types"
 import { computed, ref } from "vue"
 import axios from "axios"
 
 export const useMealStore = defineStore("meals", () => {
-  const searchedMeals = ref<{ [searchTerm: string]: ISearchResponse }>({})
+  const searchedMeals = ref<{ [term: string]: IMeal[] }>({})
   const randomMeals = ref<IMeal[]>([])
+  const searchTerm = ref("")
 
-  const fetchSearchMeal = (searchTerm: string) => {
+  const fetchSearchMeal = () => {
     return new Promise<void>(async (resolve, reject) => {
       try {
         const response = await axios.get("/api/search.php", {
-          params: { s: searchTerm },
+          params: { s: searchTerm.value },
         })
-        searchedMeals.value[searchTerm] = response.data
+        searchedMeals.value[searchTerm.value] = response.data.meals
         resolve()
       } catch (error) {
         console.log(`Failed to fetch meals: ${error}`)
@@ -22,14 +23,6 @@ export const useMealStore = defineStore("meals", () => {
     })
   }
 
-  const searchMeal = (searchTerm: string) =>
-    computed(() => {
-      if (searchedMeals.value[searchTerm] !== undefined)
-        return searchedMeals.value[searchTerm]
-      fetchSearchMeal(searchTerm)
-      return searchedMeals.value[searchTerm]
-    })
-
   const fetchRandomMeal = () => {
     return new Promise<void>(async (resolve, reject) => {
       try {
@@ -37,7 +30,7 @@ export const useMealStore = defineStore("meals", () => {
         randomMeals.value.push(response.data.meals[0])
         resolve()
       } catch (error) {
-        console.log(`Failed to fetch meals: ${error}`)
+        console.log(`Failed to fetch random meal: ${error}`)
         reject(error)
       }
     })
@@ -58,12 +51,12 @@ export const useMealStore = defineStore("meals", () => {
     })
 
   return {
-    searchMeal,
     searchedMeals,
     fetchSearchMeal,
     randomMeals,
     fetchRandomMeal,
     set3RandomMeals,
     get3RandomMeals,
+    searchTerm,
   }
 })

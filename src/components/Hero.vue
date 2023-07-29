@@ -1,8 +1,20 @@
 <script setup lang="ts">
+// import { useRouter } from "vue-router"
 import { useMealStore } from "../stores/meals"
+import Button from "./Button.vue"
+import { ref } from "vue"
 
 const mealStore = useMealStore()
 const randomMeals = mealStore.get3RandomMeals()
+
+// const router = useRouter()
+
+const search = ref("")
+const initSearch = async () => {
+  mealStore.searchTerm = search.value
+  await mealStore.fetchSearchMeal()
+  document.getElementById("results")?.scrollIntoView({ behavior: "smooth" })
+}
 </script>
 
 <template>
@@ -24,15 +36,16 @@ const randomMeals = mealStore.get3RandomMeals()
     </div>
 
     <!-- Title and search -->
-    <section
-      class="max-w-7xl flex items-center justify-center mx-auto px-4 text-center h-[50vh] sm:px-6 sm:pb-0 lg:px-8"
-    >
+    <section class="flex items-center justify-center text-center h-[50vh]">
       <div class="relative py-32">
         <h1 class="text-4xl font-bold text-white sm:text-5xl md:text-6xl">
           ABN AMRO Foodbank
         </h1>
-        <div class="mt-4 sm:mt-6">
-          <input type="text" />
+        <div class="mt-4 sm:mt-6 -ml-4">
+          <form class="flex gap-4 justify-center" @submit.prevent="initSearch()">
+            <input type="text" v-model="search" />
+            <Button type="submit" class="!rounded-full" />
+          </form>
         </div>
       </div>
     </section>

@@ -4,6 +4,7 @@ import { createPinia, setActivePinia } from "pinia"
 import MockAdapter from "axios-mock-adapter"
 import axios from "axios"
 import { describe, beforeEach, it, expect, afterEach, vi } from "vitest"
+import flushPromises from "flush-promises"
 
 var mock = new MockAdapter(axios)
 
@@ -16,18 +17,18 @@ describe("useMealStore", () => {
     setActivePinia(createPinia())
   })
 
-  it("fetches a search result and adds it to searchedMeals", async () => {
+  it("fetches default search result and adds it to searchedMeals", async () => {
     mock
       .onGet("/api/search.php", {
         params: {
           s: "",
         },
       })
-      .reply(200, mealsMockArray)
+      .reply(200, { meals: mealsMockArray })
 
     const mealStore = useMealStore()
     expect(mealStore.searchedMeals).toStrictEqual({})
-    await mealStore.fetchSearchMeal("")
+    await mealStore.fetchSearchMeal()
     expect(mealStore.searchedMeals[""]).toEqual(mealsMockArray)
   })
 
