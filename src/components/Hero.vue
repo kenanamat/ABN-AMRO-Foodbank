@@ -47,7 +47,7 @@ const initSearch = async () => {
             @submit.prevent="initSearch()"
           >
             <input type="text" v-model="search" />
-            <Button type="submit" class="!rounded-full" />
+            <Button type="submit" class="!rounded-full" arrow />
           </form>
         </div>
       </div>

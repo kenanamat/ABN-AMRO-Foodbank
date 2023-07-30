@@ -24,7 +24,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  arrow: true,
+  arrow: false,
   tag: "button",
 })
 
