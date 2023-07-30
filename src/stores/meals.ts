@@ -1,5 +1,5 @@
 import { defineStore } from "pinia"
-import { IMeal } from "../types"
+import { IMeal, ingredientsListItem } from "../types"
 import { computed, ref } from "vue"
 import axios from "axios"
 
@@ -68,8 +68,8 @@ export const useMealStore = defineStore("meals", () => {
 
   // Create a better formatted list of ingredients
   const getIngredientsList = (meal: IMeal) => {
-    let list: { ingredient: string; measure: string }[] = []
-    // There is a max of 20 ingredients
+    let list: ingredientsListItem[] = []
+    // API returns no more than 20 ingredients
     for (let index = 1; index < 20; index++) {
       const ingredient = meal[`strIngredient${index}` as keyof IMeal] as string
       if (ingredient == "") break

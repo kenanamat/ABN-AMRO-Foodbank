@@ -1,3 +1,8 @@
+export interface ingredientsListItem {
+  ingredient: string
+  measure: string
+}
+
 export interface ISearchResponse {
   meals: IMeal[]
 }
