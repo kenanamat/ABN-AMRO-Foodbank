@@ -71,10 +71,10 @@ export const useMealStore = defineStore("meals", () => {
     let list: ingredientsListItem[] = []
     // API returns no more than 20 ingredients
     for (let index = 1; index < 20; index++) {
-      const ingredient = meal[`strIngredient${index}` as keyof IMeal] as string
+      const ingredient = meal[`strIngredient${index}` as keyof IMeal] ?? ""
       if (ingredient == "") break
       else {
-        const measure = meal[`strMeasure${index}` as keyof IMeal] as string
+        const measure = meal[`strMeasure${index}` as keyof IMeal] ?? ""
         list.push({
           ingredient: ingredient,
           measure: measure,

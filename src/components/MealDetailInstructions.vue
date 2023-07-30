@@ -7,7 +7,10 @@ defineProps<{ meal: IMeal }>()
 </script>
 
 <template>
-  <TabGroup as="div" class="mx-auto mt-12 w-full max-w-2xl lg:col-span-4 lg:-mt-2 lg:max-w-none order-3 p-6">
+  <TabGroup
+    as="div"
+    class="mx-auto mt-12 w-full max-w-2xl lg:col-span-4 lg:-mt-2 lg:max-w-none order-3 p-6"
+  >
     <div class="border-b border-black-green">
       <TabList class="flex">
         <Tab as="template" v-slot="{ selected }">
