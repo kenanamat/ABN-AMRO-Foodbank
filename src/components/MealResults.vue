@@ -12,10 +12,11 @@ const mealStore = useMealStore()
       class="relative flex items-center space-x-3 rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-sm focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:border-gray-400"
     >
       <div class="flex-shrink-0">
+        <!-- Render in lower quality with /preview -->
         <img
           v-if="meal.strMealThumb"
           class="h-10 w-10 rounded-full"
-          :src="meal.strMealThumb"
+          :src="meal.strMealThumb + '/preview'" 
           alt=""
         />
       </div>

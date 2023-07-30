@@ -4,6 +4,8 @@ import { createPinia, setActivePinia } from "pinia"
 import MockAdapter from "axios-mock-adapter"
 import axios from "axios"
 import { describe, beforeEach, it, expect, afterEach, vi } from "vitest"
+import { IMeal } from "../types"
+import { ref } from "vue"
 
 var mock = new MockAdapter(axios)
 
@@ -44,5 +46,22 @@ describe("useMealStore", () => {
     expect(mealStore.randomMeals.length).toBe(1)
     await mealStore.set3RandomMeals()
     expect(mealStore.randomMeals.length).toBe(3)
+  })
+
+  it("fetches meal by id", async () => {
+    mock
+      .onGet("/api/lookup.php", {
+        params: {
+          i: "53065",
+        },
+      })
+      .reply(200, {
+        meals: [mealsMockArray[2]],
+      })
+    const mealStore = useMealStore()
+    const meal = ref<IMeal>()
+    await mealStore.fetchMealDetail("53065").then((data) => (meal.value = data))
+    expect(meal.value).toBeDefined()
+    expect(meal.value?.strMeal).toBe("Sushi")
   })
 })

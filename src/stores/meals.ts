@@ -50,6 +50,22 @@ export const useMealStore = defineStore("meals", () => {
       return randomMeals.value
     })
 
+  const fetchMealDetail = (id: string) => {
+    return new Promise<IMeal>(async (resolve, reject) => {
+      try {
+        const response = await axios.get("/api/lookup.php", {
+          params: {
+            i: id,
+          },
+        })
+        resolve(response.data.meals[0])
+      } catch (error) {
+        console.log(`Failed to fetch meal detail: ${error}`)
+        reject(error)
+      }
+    })
+  }
+
   return {
     searchedMeals,
     fetchSearchMeal,
@@ -58,5 +74,6 @@ export const useMealStore = defineStore("meals", () => {
     set3RandomMeals,
     get3RandomMeals,
     searchTerm,
+    fetchMealDetail,
   }
 })

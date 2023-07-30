@@ -18,11 +18,11 @@ const initSearch = async () => {
 </script>
 
 <template>
-  <div class="relative min-h-screen">
+  <div class="relative min-h-full">
     <!-- Background image and overlap -->
     <div
       aria-hidden="true"
-      class="absolute inset-0 flex flex-col h-4/6 !min-h-[740px]"
+      class="absolute inset-0 flex flex-col h-4/6 !min-h-[840px]"
     >
       <div class="relative w-full flex-1">
         <div class="absolute inset-0 overflow-hidden opacity-30">
@@ -42,7 +42,10 @@ const initSearch = async () => {
           ABN AMRO Foodbank
         </h1>
         <div class="mt-4 sm:mt-6 -ml-4">
-          <form class="flex gap-4 justify-center" @submit.prevent="initSearch()">
+          <form
+            class="flex gap-4 justify-center"
+            @submit.prevent="initSearch()"
+          >
             <input type="text" v-model="search" />
             <Button type="submit" class="!rounded-full" />
           </form>
@@ -83,10 +86,10 @@ const initSearch = async () => {
             <div>
               <p aria-hidden="true" class="text-sm text-white">Shop the meal</p>
               <h3 class="mt-1 font-semibold text-white">
-                <a href="#">
+                <router-link :to="`/meal/${meal.idMeal}`">
                   <span class="absolute inset-0" />
                   {{ meal.strMeal }}
-                </a>
+                </router-link>
               </h3>
             </div>
           </div>
