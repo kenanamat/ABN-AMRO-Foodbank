@@ -66,6 +66,24 @@ export const useMealStore = defineStore("meals", () => {
     })
   }
 
+  // Create a better formatted list of ingredients
+  const getIngredientsList = (meal: IMeal) => {
+    let list: { ingredient: string; measure: string }[] = []
+    // There is a max of 20 ingredients
+    for (let index = 1; index < 20; index++) {
+      const ingredient = meal[`strIngredient${index}` as keyof IMeal] as string
+      if (ingredient == "") break
+      else {
+        const measure = meal[`strMeasure${index}` as keyof IMeal] as string
+        list.push({
+          ingredient: ingredient,
+          measure: measure,
+        })
+      }
+    }
+    return list
+  }
+
   return {
     searchedMeals,
     fetchSearchMeal,
@@ -75,5 +93,6 @@ export const useMealStore = defineStore("meals", () => {
     get3RandomMeals,
     searchTerm,
     fetchMealDetail,
+    getIngredientsList,
   }
 })

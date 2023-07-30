@@ -66,166 +66,190 @@ const faqs = [
 
 <template>
   <main class="">
-    <section v-if="meal" class="">
-      <div class="lg:grid lg:grid-cols-7 lg:grid-rows-1 lg:gap-y-10">
-        <!-- Meal ingredients -->
-        <div
-          class="mx-auto mt-14 max-w-2xl sm:mt-16 lg:col-span-3 lg:row-span-2 lg:row-end-2 lg:mt-0 lg:max-w-none"
-        >
-          <!-- Header -->
-          <div class="bg-black-green lg:pt-12 p-6">
-            <h1 class="text-2xl font-bold text-white sm:text-3xl">
-              {{ meal.strMeal }}
-            </h1>
+    <section v-if="meal" class="grid lg:grid-cols-7 lg:grid-rows-1 lg:gap-y-10">
+      <!-- Meal ingredients -->
+      <div
+        class="mx-auto mt-14 max-w-2xl sm:mt-16 lg:col-span-3 lg:row-span-2 lg:row-end-2 lg:mt-0 lg:max-w-none order-2 lg:!order-1"
+      >
+        <!-- Header -->
+        <div class="bg-black-green lg:pt-12 p-6">
+          <h1 class="text-2xl font-bold text-white sm:text-3xl">
+            {{ meal.strMeal }}
+          </h1>
 
-            <div class="mt-2">
-              <p class="text-lg text-gray-400">
-                {{ meal.strCategory }}
-              </p>
-              <p v-if="meal.strTags" class="text-xs text-gray-400">
-                Tags: {{ meal.strTags }}
-              </p>
-            </div>
-          </div>
-
-          <!-- Description and ingredients -->
-          <div class="p-6 border-black-green border-r-4">
-            <p class="text-white">{{ randomDescription }}</p>
-            <hr class="-mx-6 my-8 border-primary" />
-            <h2 class="flex gap-4 items-center">
-              <CubeTransparentIcon class="h-12   text-white " />
-              <span class="text-white font-bold text-2xl">Ingredients</span>
-            </h2>
-            <ul class="bg-primary p-4">
-              
-            </ul>
+          <div class="mt-2">
+            <p class="text-lg text-gray-400">
+              {{ meal.strCategory }}
+            </p>
+            <p v-if="meal.strTags" class="text-xs text-gray-400">
+              Tags: {{ meal.strTags }}
+            </p>
           </div>
         </div>
-        <!-- Meal image -->
-        <div class="lg:col-span-4 lg:row-end-1">
-          <div class="aspect-h-3 aspect-w-4 overflow-hidden">
-            <img
-              v-if="meal.strMealThumb"
-              :src="meal.strMealThumb"
-              :alt="`Image of ${meal.strMeal}`"
-              class="object-cover object-center"
-            />
-          </div>
-        </div>
-        <!-- Meal instructions -->
-        <div
-          class="mx-auto mt-16 w-full max-w-2xl lg:col-span-4 lg:mt-0 lg:max-w-none"
-        >
-          <TabGroup as="div">
-            <div class="border-b border-gray-200">
-              <TabList class="-mb-px flex space-x-8">
-                <Tab as="template" v-slot="{ selected }">
-                  <button
-                    :class="[
-                      selected
-                        ? 'border-indigo-600 text-indigo-600'
-                        : 'border-transparent text-gray-700 hover:border-gray-300 hover:text-gray-800',
-                      'whitespace-nowrap border-b-2 py-6 text-sm font-medium',
-                    ]"
-                  >
-                    Customer Reviews
-                  </button>
-                </Tab>
-                <Tab as="template" v-slot="{ selected }">
-                  <button
-                    :class="[
-                      selected
-                        ? 'border-indigo-600 text-indigo-600'
-                        : 'border-transparent text-gray-700 hover:border-gray-300 hover:text-gray-800',
-                      'whitespace-nowrap border-b-2 py-6 text-sm font-medium',
-                    ]"
-                  >
-                    FAQ
-                  </button>
-                </Tab>
-                <Tab as="template" v-slot="{ selected }">
-                  <button
-                    :class="[
-                      selected
-                        ? 'border-indigo-600 text-indigo-600'
-                        : 'border-transparent text-gray-700 hover:border-gray-300 hover:text-gray-800',
-                      'whitespace-nowrap border-b-2 py-6 text-sm font-medium',
-                    ]"
-                  >
-                    License
-                  </button>
-                </Tab>
-              </TabList>
-            </div>
-            <TabPanels as="template">
-              <TabPanel class="-mb-10">
-                <h3 class="sr-only">Customer Reviews</h3>
 
-                <div
-                  v-for="(review, reviewIdx) in reviews.featured"
-                  :key="review.id"
-                  class="flex space-x-4 text-sm text-gray-500"
+        <!-- Description and ingredients -->
+        <div class="p-6 border-black-green lg:border-r-2">
+          <p class="text-white">{{ randomDescription }}</p>
+          <hr class="my-8 border-primary" />
+          <h2 class="flex gap-4 items-center mt-6">
+            <CubeTransparentIcon class="h-12 text-white" />
+            <span class="text-white font-bold text-2xl"
+              >Required ingredients</span
+            >
+          </h2>
+          <ul
+            class="bg-opacity-10 bg-primary mt-6 shadow-2xl rounded divide-y divide-black-green"
+          >
+            <li
+              v-for="ingredient in mealStore.getIngredientsList(meal)"
+              class="text-gray-100 flex items-center pl-4 pr-6 py-2 gap-4 transition-all hover:bg-primary hover:bg-opacity-10 first-of-type:pt-2 last-of-type:pb-2"
+            >
+              <label :for="ingredient.ingredient" class="sr-only">
+                Checkbox for {{ ingredient.measure }}
+                {{ ingredient.ingredient }}
+              </label>
+              <input
+                type="checkbox"
+                class="h-7 w-7 bg-transparent border border-primary cursor-pointer checked:bg-transparent checked:border checked:border-primary"
+                :id="ingredient.ingredient"
+              />
+              <span class="font-bold">
+                {{ ingredient.measure }} {{ ingredient.ingredient }}
+              </span>
+              <img
+                class="h-12 filter sepia-[60%] opacity-90 ml-auto"
+                :src="`https://www.themealdb.com/images/ingredients/${ingredient.ingredient}-Small.png`"
+                :alt="`Image of ${ingredient.ingredient}`"
+              />
+            </li>
+          </ul>
+        </div>
+      </div>
+      <!-- Meal image -->
+      <div class="lg:col-span-4 lg:row-end-1 order-1 lg:!order-2">
+        <div class="aspect-h-3 aspect-w-4 overflow-hidden max-lg:-mx-6">
+          <img
+            v-if="meal.strMealThumb"
+            :src="meal.strMealThumb"
+            :alt="`Image of ${meal.strMeal}`"
+            class="object-cover object-center"
+          />
+        </div>
+      </div>
+
+      <!-- Meal instructions -->
+      <div
+        class="mx-auto mt-16 w-full max-w-2xl lg:col-span-4 lg:mt-0 lg:max-w-none order-3"
+      >
+        <TabGroup as="div">
+          <div class="border-b border-gray-200">
+            <TabList class="-mb-px flex space-x-8">
+              <Tab as="template" v-slot="{ selected }">
+                <button
+                  :class="[
+                    selected
+                      ? 'border-indigo-600 text-indigo-600'
+                      : 'border-transparent text-gray-700 hover:border-gray-300 hover:text-gray-800',
+                    'whitespace-nowrap border-b-2 py-6 text-sm font-medium',
+                  ]"
                 >
-                  <div class="flex-none py-10">
-                    <img
-                      :src="review.avatarSrc"
-                      alt=""
-                      class="h-10 w-10 rounded-full bg-gray-100"
-                    />
-                  </div>
-                  <div
-                    :class="[
-                      reviewIdx === 0 ? '' : 'border-t border-gray-200',
-                      'py-10',
-                    ]"
-                  >
-                    <h3 class="font-medium text-gray-900">
-                      {{ review.author }}
-                    </h3>
-                    <p>
-                      <time :datetime="review.datetime">{{ review.date }}</time>
-                    </p>
+                  Customer Reviews
+                </button>
+              </Tab>
+              <Tab as="template" v-slot="{ selected }">
+                <button
+                  :class="[
+                    selected
+                      ? 'border-indigo-600 text-indigo-600'
+                      : 'border-transparent text-gray-700 hover:border-gray-300 hover:text-gray-800',
+                    'whitespace-nowrap border-b-2 py-6 text-sm font-medium',
+                  ]"
+                >
+                  FAQ
+                </button>
+              </Tab>
+              <Tab as="template" v-slot="{ selected }">
+                <button
+                  :class="[
+                    selected
+                      ? 'border-indigo-600 text-indigo-600'
+                      : 'border-transparent text-gray-700 hover:border-gray-300 hover:text-gray-800',
+                    'whitespace-nowrap border-b-2 py-6 text-sm font-medium',
+                  ]"
+                >
+                  License
+                </button>
+              </Tab>
+            </TabList>
+          </div>
+          <TabPanels as="template">
+            <TabPanel class="-mb-10">
+              <h3 class="sr-only">Customer Reviews</h3>
 
-                    <div class="mt-4 flex items-center">
-                      <StarIcon
-                        v-for="rating in [0, 1, 2, 3, 4]"
-                        :key="rating"
-                        :class="[
-                          review.rating > rating
-                            ? 'text-yellow-400'
-                            : 'text-gray-300',
-                          'h-5 w-5 flex-shrink-0',
-                        ]"
-                        aria-hidden="true"
-                      />
-                    </div>
-                    <p class="sr-only">{{ review.rating }} out of 5 stars</p>
-
-                    <div
-                      class="prose prose-sm mt-4 max-w-none text-gray-500"
-                      v-html="review.content"
-                    />
-                  </div>
+              <div
+                v-for="(review, reviewIdx) in reviews.featured"
+                :key="review.id"
+                class="flex space-x-4 text-sm text-gray-500"
+              >
+                <div class="flex-none py-10">
+                  <img
+                    :src="review.avatarSrc"
+                    alt=""
+                    class="h-10 w-10 rounded-full bg-gray-100"
+                  />
                 </div>
-              </TabPanel>
+                <div
+                  :class="[
+                    reviewIdx === 0 ? '' : 'border-t border-gray-200',
+                    'py-10',
+                  ]"
+                >
+                  <h3 class="font-medium text-gray-900">
+                    {{ review.author }}
+                  </h3>
+                  <p>
+                    <time :datetime="review.datetime">{{ review.date }}</time>
+                  </p>
 
-              <TabPanel class="text-sm text-gray-500">
-                <h3 class="sr-only">Frequently Asked Questions</h3>
+                  <div class="mt-4 flex items-center">
+                    <StarIcon
+                      v-for="rating in [0, 1, 2, 3, 4]"
+                      :key="rating"
+                      :class="[
+                        review.rating > rating
+                          ? 'text-yellow-400'
+                          : 'text-gray-300',
+                        'h-5 w-5 flex-shrink-0',
+                      ]"
+                      aria-hidden="true"
+                    />
+                  </div>
+                  <p class="sr-only">{{ review.rating }} out of 5 stars</p>
 
-                <dl>
-                  <template v-for="faq in faqs" :key="faq.question">
-                    <dt class="mt-10 font-medium text-gray-900">
-                      {{ faq.question }}
-                    </dt>
-                    <dd class="prose prose-sm mt-2 max-w-none text-gray-500">
-                      <p>{{ faq.answer }}</p>
-                    </dd>
-                  </template>
-                </dl>
-              </TabPanel>
-            </TabPanels>
-          </TabGroup>
-        </div>
+                  <div
+                    class="prose prose-sm mt-4 max-w-none text-gray-500"
+                    v-html="review.content"
+                  />
+                </div>
+              </div>
+            </TabPanel>
+
+            <TabPanel class="text-sm text-gray-500">
+              <h3 class="sr-only">Frequently Asked Questions</h3>
+
+              <dl>
+                <template v-for="faq in faqs" :key="faq.question">
+                  <dt class="mt-10 font-medium text-gray-900">
+                    {{ faq.question }}
+                  </dt>
+                  <dd class="prose prose-sm mt-2 max-w-none text-gray-500">
+                    <p>{{ faq.answer }}</p>
+                  </dd>
+                </template>
+              </dl>
+            </TabPanel>
+          </TabPanels>
+        </TabGroup>
       </div>
     </section>
   </main>
