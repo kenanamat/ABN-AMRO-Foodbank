@@ -93,9 +93,9 @@ const faqs = [
           <hr class="my-8 border-primary" />
           <h2 class="flex gap-4 items-center mt-6">
             <CubeTransparentIcon class="h-12 text-white" />
-            <span class="text-white font-bold text-2xl"
-              >Required ingredients</span
-            >
+            <span class="text-white font-bold text-2xl">
+              Required ingredients
+            </span>
           </h2>
           <ul
             class="bg-opacity-10 bg-primary mt-6 shadow-2xl rounded divide-y divide-black-green"

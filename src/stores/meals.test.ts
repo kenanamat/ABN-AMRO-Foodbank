@@ -64,4 +64,34 @@ describe("useMealStore", () => {
     expect(meal.value).toBeDefined()
     expect(meal.value?.strMeal).toBe("Sushi")
   })
+
+  it("creates a correct ingredients list", () => {
+    const meal = mealsMockArray[7]
+    const mealStore = useMealStore()
+
+    const ingredientsList = mealStore.getIngredientsList(meal)
+
+    expect(ingredientsList).toHaveLength(15)
+    expect(ingredientsList[0]).toBeDefined()
+    expect(ingredientsList[0].measure).toBe("1 tblsp ")
+    expect(ingredientsList[0].ingredient).toBe("Olive Oil")
+
+    expect(ingredientsList).toStrictEqual([
+      { ingredient: "Olive Oil", measure: "1 tblsp " },
+      { ingredient: "Bacon", measure: "2" },
+      { ingredient: "Onion", measure: "1 finely chopped " },
+      { ingredient: "Celery", measure: "1 Stick" },
+      { ingredient: "Carrots", measure: "1 medium" },
+      { ingredient: "Garlic", measure: "2 cloves chopped" },
+      { ingredient: "Minced Beef", measure: "500g" },
+      { ingredient: "Tomato Puree", measure: "1 tbls" },
+      { ingredient: "Chopped Tomatoes", measure: "800g" },
+      { ingredient: "Honey", measure: "1 tblsp " },
+      { ingredient: "Lasagne Sheets", measure: "500g" },
+      { ingredient: "Creme Fraiche", measure: "400ml" },
+      { ingredient: "Mozzarella Balls", measure: "125g" },
+      { ingredient: "Parmesan Cheese", measure: "50g" },
+      { ingredient: "Basil Leaves", measure: "Topping" },
+    ])
+  })
 })
