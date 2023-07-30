@@ -40,6 +40,8 @@ export const useMealStore = defineStore("meals", () => {
     while (randomMeals.value.length < 3) {
       // No duplicate check since the chance is less than 1.02%
       await fetchRandomMeal()
+      // Extra delay for nicer animations
+      await new Promise((res) => setTimeout(res, 60))
     }
   }
 
