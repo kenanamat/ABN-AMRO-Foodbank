@@ -1,7 +1,6 @@
 # ABN AMRO FoodBank
 
 Welcome to FoodBank! This is a simple, user-friendly, single-page web application that allows users to browse and find their favorite recipes using the open API provided by TheMealDB.
-Your README file looks great! It's thorough and well-structured. However, there are a few improvements and additions you could consider:
 
 ## Table of Contents
 
