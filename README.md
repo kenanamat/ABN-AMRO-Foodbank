@@ -85,7 +85,7 @@ This project is built with **Vue**, a popular JavaScript framework for building 
 - **Vue-Router** is used to handle navigation on a single-page web application.
 - **Axios** to make API calls simpler.
 - **flush-promises** for testing, when called it awaits all promises before continuing a test .
-- **Vitest** and **happy-dom** for testing, Vitest was chosen because of it's seamless integration with Vite and Typescript. happy-dom was chosen because it has more documentation than jsdom...
+- **Vitest** and **happy-dom** for testing, Vitest was chosen because of it's seamless integration with Vite and Typescript. happy-dom was chosen because it has more documentation than jsdom
 - **axios-mock-adapter** to help mocking API calls when testing.
 
 Tests are not kept in a separate `__tests__` folder, instead they are right next to the file they're testing. This helps to keep up to date with tests.
