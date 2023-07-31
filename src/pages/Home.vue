@@ -2,18 +2,32 @@
 import MealResults from "../components/MealResults.vue"
 import { useMealStore } from "../stores/meals"
 import Button from "../components/Button.vue"
-import { ref } from "vue"
+import { ref, onMounted } from "vue"
 import RandomMealBlock from "../components/RandomMealBlock.vue"
+import {
+  ExclamationCircleIcon,
+  MagnifyingGlassIcon,
+} from "@heroicons/vue/24/outline"
 
 const mealStore = useMealStore()
 const randomMeals = mealStore.get3RandomMeals()
 
 const search = ref("")
+const emptyResults = ref(false)
 const initSearch = async () => {
   mealStore.searchTerm = search.value
-  await mealStore.fetchSearchMeal()
-  document.getElementById("results")?.scrollIntoView({ behavior: "smooth" })
+  await mealStore.fetchSearchMeal().catch(() => {
+    emptyResults.value = true
+  })
+  if (!emptyResults.value)
+    document.getElementById("results")?.scrollIntoView({ behavior: "smooth" })
+  search.value = ""
 }
+
+const input = ref<HTMLInputElement | null>(null)
+onMounted(() => {
+  input.value?.focus()
+})
 </script>
 
 <template>
@@ -39,15 +53,69 @@ const initSearch = async () => {
       <!-- Title and search -->
       <section class="flex items-center justify-center text-center h-[50vh]">
         <div class="relative py-32">
-          <h1 class="text-4xl font-bold text-white sm:text-5xl md:text-6xl">
-            ABN AMRO Foodbank
+          <img
+            aria-hidden="true"
+            src="../assets/abn-amro-logo.png"
+            alt="ABN AMRO logo"
+            class="h-16 mb-6 mx-auto"
+          />
+          <h1
+            class="text-4xl font-bold text-white sm:text-5xl md:text-6xl tracking-wide mb-6"
+          >
+            Welcome to FoodBank!
           </h1>
-          <div class="mt-4 sm:mt-6 -ml-4">
+          <p class="text-lg leading-snug max-w-5xl text-white">
+            Our ultimate culinary oasis where we serve up a feast of delightful
+            recipes for your taste buds to indulge in! <br />
+            Here, we're not crunching numbers. We're crunching on some delicious
+            veggies instead.
+          </p>
+          <div class="mt-4 sm:mt-12">
             <form
               class="flex gap-4 justify-center"
               @submit.prevent="initSearch()"
             >
-              <input type="text" v-model="search" />
+              <label for="search" class="sr-only"> Search for a meal </label>
+              <div class="relative w-full max-w-[420px]">
+                <input
+                  type="text"
+                  name="search"
+                  id="search"
+                  ref="input"
+                  :class="[
+                    'bg-primary bg-opacity-30 w-full h-full text-white border-none ring-primary ring-1 ring-inset focus:ring-2 focus:ring-inset',
+                    emptyResults
+                      ? 'ring-red-300 placeholder:text-red-300 focus:ring-red-500'
+                      : 'placeholder:text-primary focus:ring-secondary-hover',
+                  ]"
+                  placeholder="Find your meal!"
+                  v-model="search"
+                  @keydown="emptyResults = false"
+                  aria-invalid="true"
+                  aria-describedby="no-results"
+                />
+                <div
+                  class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3"
+                >
+                  <ExclamationCircleIcon
+                    v-if="emptyResults"
+                    class="h-5 w-5 text-red-500"
+                    aria-hidden="true"
+                  />
+                  <MagnifyingGlassIcon
+                    v-else
+                    aria-hidden="true"
+                    class="h-5 w-5 text-black-green"
+                  />
+                </div>
+                <p
+                  v-if="emptyResults"
+                  class="mt-4 text-sm text-red-600 absolute -bottom-5"
+                  id="no-results"
+                >
+                  No meals found!
+                </p>
+              </div>
               <Button type="submit" class="!rounded-full" arrow />
             </form>
           </div>

@@ -14,7 +14,8 @@ export const useMealStore = defineStore("meals", () => {
         const response = await axios.get("/api/search.php", {
           params: { s: searchTerm.value },
         })
-        searchedMeals.value[searchTerm.value] = response.data.meals
+        if (response.data.meals == null) reject("No results")
+        else searchedMeals.value[searchTerm.value] = response.data.meals
         resolve()
       } catch (error) {
         console.log(`Failed to fetch meals: ${error}`)
