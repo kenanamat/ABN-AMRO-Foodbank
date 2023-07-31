@@ -53,7 +53,7 @@ mealStore.set3RandomMeals()
             veggies instead.
           </p>
           <div class="mt-12">
-            <SearchForm :fetch="mealStore.fetchSearchMeal" />
+            <SearchForm search-by="search" />
           </div>
         </div>
       </section>

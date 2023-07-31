@@ -14,6 +14,8 @@ export const useMealStore = defineStore("meals", () => {
   const areaList = ref<string[]>([])
   const randomMeals = ref<IMeal[]>([])
   const searchTerm = ref("")
+  const tempSearch = ref("")
+  const emptyResults = ref(false)
 
   const fetchSearchMeal = () => {
     return new Promise<void>(async (resolve, reject) => {
@@ -29,6 +31,24 @@ export const useMealStore = defineStore("meals", () => {
         reject(error)
       }
     })
+  }
+
+  const initSearch = async (
+    searchBy: "search" | "area" | "categories" | "ingredients",
+    forcedSearchTerm?: string | undefined
+  ) => {
+    searchTerm.value = forcedSearchTerm ?? tempSearch.value
+    if (searchBy == "search")
+      await fetchSearchMeal().catch(() => {
+        emptyResults.value = true
+      })
+    if (searchBy == "area")
+      await fetchByArea().catch(() => {
+        emptyResults.value = true
+      })
+    if (!emptyResults.value)
+      document.getElementById("results")?.scrollIntoView({ behavior: "smooth" })
+    tempSearch.value = ""
   }
 
   const fetchRandomMeal = () => {
@@ -105,11 +125,13 @@ export const useMealStore = defineStore("meals", () => {
   }
 
   const setAreaList = async () => {
+    if (areaList.value.length > 0) return
     await fetchList("area").then((data) => {
       data.forEach((area) => {
         if (area.strArea) areaList.value.push(area.strArea)
       })
     })
+    areaList.value.sort()
   }
 
   // Create a better formatted list of ingredients
@@ -143,6 +165,9 @@ export const useMealStore = defineStore("meals", () => {
     setAreaList,
     fetchByArea,
     areaMeals,
-    areaList
+    areaList,
+    tempSearch,
+    initSearch,
+    emptyResults,
   }
 })

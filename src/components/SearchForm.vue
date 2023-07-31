@@ -9,21 +9,10 @@ import {
 
 const mealStore = useMealStore()
 
-const props = defineProps<{
-  fetch: Function
+defineProps<{
+  searchBy: "search" | "area" | "categories" | "ingredients"
+  forcedSearchTerm?: string
 }>()
-
-const search = ref("")
-const emptyResults = ref(false)
-const initSearch = async () => {
-  mealStore.searchTerm = search.value
-  await props.fetch().catch(() => {
-    emptyResults.value = true
-  })
-  if (!emptyResults.value)
-    document.getElementById("results")?.scrollIntoView({ behavior: "smooth" })
-  search.value = ""
-}
 
 // Focus input on mount
 const input = ref<HTMLInputElement | null>(null)
@@ -33,7 +22,11 @@ onMounted(() => {
 </script>
 
 <template>
-  <form class="flex gap-4 justify-center" @submit.prevent="initSearch()">
+  <form
+    class="flex gap-4 justify-center"
+    @submit.prevent="mealStore.initSearch(searchBy, forcedSearchTerm)"
+    id="searchForm"
+  >
     <label for="search" class="sr-only"> Search for a meal </label>
     <div class="relative w-full max-w-[374px]">
       <input
@@ -43,21 +36,21 @@ onMounted(() => {
         ref="input"
         :class="[
           'bg-primary bg-opacity-30 w-full h-full text-white border-none ring-primary ring-1 ring-inset focus:ring-2 focus:ring-inset',
-          emptyResults
+          mealStore.emptyResults
             ? 'ring-red-300 placeholder:text-red-300 focus:ring-red-500'
             : 'placeholder:text-primary focus:ring-secondary-hover',
         ]"
         placeholder="Find your meal!"
-        v-model="search"
-        @keydown="emptyResults = false"
-        :aria-invalid="emptyResults"
+        v-model="mealStore.tempSearch"
+        @keydown="mealStore.emptyResults = false"
+        :aria-invalid="mealStore.emptyResults"
         aria-describedby="no-results"
       />
       <div
         class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3"
       >
         <ExclamationCircleIcon
-          v-if="emptyResults"
+          v-if="mealStore.emptyResults"
           class="h-5 w-5 text-red-500"
           aria-hidden="true"
         />
@@ -68,7 +61,7 @@ onMounted(() => {
         />
       </div>
       <p
-        v-if="emptyResults"
+        v-if="mealStore.emptyResults"
         class="mt-4 text-sm text-red-600 absolute -bottom-5"
         id="no-results"
       >
