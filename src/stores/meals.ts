@@ -1,6 +1,6 @@
 import { defineStore } from "pinia"
 import { IMeal, ingredientsListItem } from "../types"
-import { computed, ref } from "vue"
+import { ref } from "vue"
 import axios from "axios"
 
 export const useMealStore = defineStore("meals", () => {
@@ -38,18 +38,12 @@ export const useMealStore = defineStore("meals", () => {
   }
 
   const set3RandomMeals = async () => {
+    randomMeals.value = []
     while (randomMeals.value.length < 3) {
       // No duplicate check since the chance is less than 1.02%
       await fetchRandomMeal()
     }
   }
-
-  const get3RandomMeals = () =>
-    computed(() => {
-      if (randomMeals.value.length > 0) return randomMeals.value
-      set3RandomMeals()
-      return randomMeals.value
-    })
 
   const fetchMealDetail = (id: string) => {
     return new Promise<IMeal>(async (resolve, reject) => {
@@ -91,7 +85,6 @@ export const useMealStore = defineStore("meals", () => {
     randomMeals,
     fetchRandomMeal,
     set3RandomMeals,
-    get3RandomMeals,
     searchTerm,
     fetchMealDetail,
     getIngredientsList,

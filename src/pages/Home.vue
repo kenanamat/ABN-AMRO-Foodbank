@@ -5,12 +5,13 @@ import Button from "../components/Button.vue"
 import { ref, onMounted } from "vue"
 import RandomMealBlock from "../components/RandomMealBlock.vue"
 import {
+  ArrowPathIcon,
   ExclamationCircleIcon,
   MagnifyingGlassIcon,
 } from "@heroicons/vue/24/outline"
 
 const mealStore = useMealStore()
-const randomMeals = mealStore.get3RandomMeals()
+mealStore.set3RandomMeals()
 
 const search = ref("")
 const emptyResults = ref(false)
@@ -93,7 +94,7 @@ onMounted(() => {
                   placeholder="Find your meal!"
                   v-model="search"
                   @keydown="emptyResults = false"
-                  aria-invalid="true"
+                  :aria-invalid="emptyResults"
                   aria-describedby="no-results"
                 />
                 <div
@@ -131,11 +132,22 @@ onMounted(() => {
           class="mx-auto grid max-w-md grid-cols-1 gap-y-6 sm:max-w-7xl sm:grid-cols-3 sm:gap-x-6 sm:gap-y-0 lg:gap-x-14"
         >
           <RandomMealBlock
-            v-for="meal in randomMeals"
+            v-for="meal in mealStore.randomMeals"
             :meal="meal"
             :key="meal.idMeal"
           />
         </ul>
+        <Button
+          v-show="mealStore.randomMeals.length == 3"
+          class="rounded-full mt-12 mb-4 mx-auto transition-all duration-300 !bg-opacity-40 hover:rotate-180 !p-3"
+          :class="[
+            mealStore.randomMeals.length == 3 ? 'opacity-100' : 'opacity-0',
+          ]"
+          @click="mealStore.set3RandomMeals()"
+        >
+          <span class="sr-only">Refresh random meals</span>
+          <ArrowPathIcon class="h-6 text-gray-300" />
+        </Button>
       </section>
     </div>
 
