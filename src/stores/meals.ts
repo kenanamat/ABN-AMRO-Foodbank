@@ -7,6 +7,7 @@ export const useMealStore = defineStore("meals", () => {
   const searchedMeals = ref<{ [term: string]: IMeal[] }>({})
   const randomMeals = ref<IMeal[]>([])
   const searchTerm = ref("")
+  const searchArea = ref("")
 
   const fetchSearchMeal = () => {
     return new Promise<void>(async (resolve, reject) => {
@@ -61,6 +62,36 @@ export const useMealStore = defineStore("meals", () => {
     })
   }
 
+  const fetchList = (listToFetch: "categories" | "area" | "ingredients") => {
+    return new Promise<IMeal[]>(async (resolve, reject) => {
+      try {
+        let param: { [key: string]: "list" } = {}
+
+        if (listToFetch == "categories") param = { c: "list" }
+        else if (listToFetch == "area") param = { a: "list" }
+        else if (listToFetch == "ingredients") param = { i: "list" }
+        const response = await axios.get("/api/list.php", {
+          params: param,
+        })
+
+        resolve(response.data.meals)
+      } catch (error) {
+        console.log(`Failed to fetch meal detail: ${error}`)
+        reject(error)
+      }
+    })
+  }
+
+  const getAreaList = async () => {
+    const areaList: string[] = []
+    await fetchList("area").then((data) => {
+      data.forEach((area) => {
+        if (area.strArea) areaList.push(area.strArea)
+      })
+    })
+    return areaList
+  }
+
   // Create a better formatted list of ingredients
   const getIngredientsList = (meal: IMeal) => {
     let list: ingredientsListItem[] = []
@@ -88,5 +119,8 @@ export const useMealStore = defineStore("meals", () => {
     searchTerm,
     fetchMealDetail,
     getIngredientsList,
+    fetchList,
+    searchArea,
+    getAreaList,
   }
 })

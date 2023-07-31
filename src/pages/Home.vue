@@ -155,10 +155,8 @@ onMounted(() => {
     <section id="results" class="mt-14">
       <template v-if="mealStore.searchedMeals[mealStore.searchTerm]">
         <h2 class="text-4xl mb-4 gap-4 font-bold text-white flex items-center">
-          <MagnifyingGlassIcon aria-disabled="true" class="h-8"/>
-          <span>
-            Search results:
-          </span>
+          <MagnifyingGlassIcon aria-disabled="true" class="h-8" />
+          <span> Search results: </span>
         </h2>
         <MealResults />
       </template>

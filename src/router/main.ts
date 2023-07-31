@@ -12,6 +12,11 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import(`../pages/MealDetail.vue`),
   },
   {
+    path: "/area",
+    name: "Search by area",
+    component: () => import(`../pages/SearchByArea.vue`),
+  },
+  {
     path: "/:pathMatch(.*)*",
     name: "Not found",
     component: () => import(`../pages/404.vue`),
