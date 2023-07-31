@@ -2,6 +2,7 @@
 import { IMeal } from "../types"
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/vue"
 import Button from "../components/Button.vue"
+import Loader from "./Loader.vue"
 
 defineProps<{ meal: IMeal }>()
 </script>
@@ -49,7 +50,9 @@ defineProps<{ meal: IMeal }>()
         <!-- Fake loader -->
         <div
           class="animate-pulse z-0 absolute bg-black-green w-full h-96 inset-0"
-        />
+        >
+          <Loader class="h-full" />
+        </div>
         <iframe
           class="relative z-10 w-full h-96"
           :src="`https://www.youtube.com/embed/${

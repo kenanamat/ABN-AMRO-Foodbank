@@ -5,6 +5,7 @@ import { ref } from "vue"
 import { IMeal } from "../types"
 import MealDetailIngredients from "../components/MealDetailIngredients.vue"
 import MealDetailInstructions from "../components/MealDetailInstructions.vue"
+import Loader from "../components/Loader.vue"
 
 // Fetch the meal with id from route
 const route = useRoute()
@@ -35,5 +36,6 @@ mealStore.fetchMealDetail(mealId).then((data) => (meal.value = data))
       <!-- Meal instructions -->
       <MealDetailInstructions :meal="meal" />
     </section>
+    <Loader class="mt-20" v-else/>
   </main>
 </template>

@@ -14,7 +14,17 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/area",
     name: "Search by area",
-    component: () => import(`../pages/SearchByArea.vue`),
+    component: () => import(`../pages/SearchBy.vue`),
+  },
+  {
+    path: "/categories",
+    name: "Search by categories",
+    component: () => import(`../pages/SearchBy.vue`),
+  },
+  {
+    path: "/ingredients",
+    name: "Search by ingredients",
+    component: () => import(`../pages/SearchBy.vue`),
   },
   {
     path: "/:pathMatch(.*)*",
