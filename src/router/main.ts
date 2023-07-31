@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router"
+import { useMealStore } from "../stores/meals"
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -42,5 +43,8 @@ export const router = createRouter({
 })
 
 router.beforeEach(async (_, _from, next) => {
+  const mealStore = useMealStore()
+  mealStore.tempSearch = ""
+  mealStore.emptyResults = false
   return next()
 })

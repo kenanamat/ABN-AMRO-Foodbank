@@ -6,6 +6,7 @@ import {
   ExclamationCircleIcon,
   MagnifyingGlassIcon,
 } from "@heroicons/vue/24/outline"
+import { XCircleIcon } from "@heroicons/vue/20/solid"
 
 const mealStore = useMealStore()
 
@@ -47,11 +48,23 @@ onMounted(() => {
         aria-describedby="no-results"
       />
       <div
-        class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3"
+        class="absolute inset-y-0 right-0 flex items-center pr-3"
+        :class="[
+          mealStore.tempSearch == ''
+            ? 'pointer-events-none'
+            : 'pointer-events-auto',
+        ]"
       >
         <ExclamationCircleIcon
           v-if="mealStore.emptyResults"
-          class="h-5 w-5 text-red-500"
+          @click="mealStore.tempSearch = ''"
+          class="h-5 w-5 text-red-500 cursor-pointer"
+          aria-hidden="true"
+        />
+        <XCircleIcon
+          v-else-if="mealStore.tempSearch != ''"
+          @click="mealStore.tempSearch = ''"
+          class="h-6 w-6 text-primary cursor-pointer"
           aria-hidden="true"
         />
         <MagnifyingGlassIcon

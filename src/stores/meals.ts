@@ -7,7 +7,7 @@ export const useMealStore = defineStore("meals", () => {
   const searchedMeals = ref<{
     [term: string]: IMeal[]
   }>({})
-  const areaMeals = ref<{
+  const filterMeals = ref<{
     [term: string]: IMeal[]
   }>({})
 
@@ -38,6 +38,7 @@ export const useMealStore = defineStore("meals", () => {
     searchBy: "search" | "area" | "categories" | "ingredients",
     forcedSearchTerm?: string | undefined
   ) => {
+    emptyResults.value = false
     searchTerm.value = forcedSearchTerm ?? tempSearch.value
     if (searchBy == "search")
       await fetchSearchMeal().catch(() => {
@@ -49,7 +50,6 @@ export const useMealStore = defineStore("meals", () => {
       })
     if (!emptyResults.value)
       document.getElementById("results")?.scrollIntoView({ behavior: "smooth" })
-    tempSearch.value = ""
   }
 
   const fetchRandomMeal = () => {
@@ -110,9 +110,9 @@ export const useMealStore = defineStore("meals", () => {
         const response = await axios.get("/api/filter.php", {
           params: { [fetchBy[0]]: searchTerm.value },
         })
-        
+
         if (response.data.meals == null) reject("No results")
-        else areaMeals.value[fetchBy + searchTerm.value] = response.data.meals
+        else filterMeals.value[fetchBy + searchTerm.value] = response.data.meals
         resolve()
       } catch (error) {
         console.log(`Failed to fetch meals: ${error}`)
@@ -178,7 +178,7 @@ export const useMealStore = defineStore("meals", () => {
     getIngredientsList,
     fetchList,
     fetchFilter,
-    areaMeals,
+    filterMeals,
     tempSearch,
     initSearch,
     emptyResults,

@@ -11,6 +11,7 @@ import { ILists } from "../types"
 
 const mealStore = useMealStore()
 
+mealStore.filterList = []
 const searchBy = useRoute().path.split("/")[1] as keyof ILists
 mealStore.setFilterList(searchBy as keyof ILists)
 
@@ -47,6 +48,7 @@ const alphabet = "abcdefghijklmnopqrstuvwxyz".split("")
       leave-from-class="opacity-100"
       leave-to-class="opacity-0"
     >
+      <!-- List -->
       <section class="pt-6 pb-12">
         <ul class="columns-1 sm:columns-2 lg:columns-3 xl:columns-4">
           <template v-for="letter in alphabet">
@@ -77,9 +79,11 @@ const alphabet = "abcdefghijklmnopqrstuvwxyz".split("")
         </ul>
       </section>
     </Transition>
+
     <section class="py-12" v-else-if="mealStore.filterList.length == 0">
       <Loader />
     </section>
+
     <section class="py-12" v-else>
       <h2 class="text-white font-bold text-2xl">No results</h2>
     </section>
@@ -106,5 +110,8 @@ const alphabet = "abcdefghijklmnopqrstuvwxyz".split("")
       />
     </div>
   </Transition>
-  <MealResults :meals="mealStore.areaMeals[searchBy + mealStore.searchTerm]" />
+  <!-- Search results -->
+  <MealResults
+    :meals="mealStore.filterMeals[searchBy + mealStore.searchTerm]"
+  />
 </template>

@@ -16,17 +16,16 @@ defineProps<{ meals: IMeal[] }>()
         <li
           v-for="meal in meals"
           :key="meal.idMeal"
-          class="relative flex items-center space-x-3 bg-primary bg-opacity-20 focus-within:ring-1 focus-within:ring-secondary-hover hover:bg-opacity-30 transition-all"
+          class="relative flex items-center space-x-4 bg-primary bg-opacity-20 focus-within:ring-1 focus-within:ring-secondary-hover hover:bg-opacity-30 transition-all"
         >
           <div
             class="bg-primary bg-opacity-10 p-3 shadow-[1px_0px_10px_0px_rgba(0,0,0,0.1)]"
           >
-            <!-- Render in lower quality with /preview -->
             <img
               v-if="meal.strMealThumb"
-              class="h-20 w-20 rounded-lg"
-              :src="meal.strMealThumb + '/preview'"
-              alt=""
+              class="h-20 w-20 rounded-lg text-xs text-white"
+              :src="meal.strMealThumb"
+              :alt="`Thumbnail of ${meal.strMeal}`"
             />
           </div>
           <div class="min-w-0 flex-1">
