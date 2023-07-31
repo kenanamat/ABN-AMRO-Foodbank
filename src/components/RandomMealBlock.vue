@@ -7,7 +7,7 @@ defineProps<{ meal: IMeal }>()
 <template>
   <Transition
     :appear="true"
-    enter-active-class="ease-out duration-500"
+    enter-active-class="ease-out duration-500 delay-75"
     enter-from-class="translate-y-4 opacity-0"
     enter-to-class="translate-y-0 opacity-100"
     leave-active-class="ease-in duration-100"

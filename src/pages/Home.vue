@@ -51,8 +51,10 @@ onMounted(() => {
       </div>
 
       <!-- Title and search -->
-      <section class="flex items-center justify-center text-center h-[50vh]">
-        <div class="relative py-32">
+      <section
+        class="flex items-center justify-center text-center min-h-[50vh]"
+      >
+        <div class="relative py-16 md:py-32">
           <img
             aria-hidden="true"
             src="../assets/abn-amro-logo.png"
@@ -60,7 +62,7 @@ onMounted(() => {
             class="h-16 mb-6 mx-auto"
           />
           <h1
-            class="text-4xl font-bold text-white sm:text-5xl md:text-6xl tracking-wide mb-6"
+            class="text-3xl font-bold text-white sm:text-5xl md:text-6xl tracking-wide mb-6"
           >
             Welcome to FoodBank!
           </h1>
@@ -70,13 +72,13 @@ onMounted(() => {
             Here, we're not crunching numbers. We're crunching on some delicious
             veggies instead.
           </p>
-          <div class="mt-4 sm:mt-12">
+          <div class="mt-12">
             <form
               class="flex gap-4 justify-center"
               @submit.prevent="initSearch()"
             >
               <label for="search" class="sr-only"> Search for a meal </label>
-              <div class="relative w-full max-w-[420px]">
+              <div class="relative w-full max-w-[374px]">
                 <input
                   type="text"
                   name="search"
