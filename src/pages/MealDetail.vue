@@ -36,6 +36,6 @@ mealStore.fetchMealDetail(mealId).then((data) => (meal.value = data))
       <!-- Meal instructions -->
       <MealDetailInstructions :meal="meal" />
     </section>
-    <Loader class="mt-20" v-else/>
+    <Loader v-else class="mt-20" />
   </main>
 </template>
