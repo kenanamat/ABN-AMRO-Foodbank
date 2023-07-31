@@ -4,10 +4,16 @@ import { ref } from "vue"
 import axios from "axios"
 
 export const useMealStore = defineStore("meals", () => {
-  const searchedMeals = ref<{ [term: string]: IMeal[] }>({})
+  const searchedMeals = ref<{
+    [term: string]: IMeal[]
+  }>({})
+  const areaMeals = ref<{
+    [term: string]: IMeal[]
+  }>({})
+
+  const areaList = ref<string[]>([])
   const randomMeals = ref<IMeal[]>([])
   const searchTerm = ref("")
-  const searchArea = ref("")
 
   const fetchSearchMeal = () => {
     return new Promise<void>(async (resolve, reject) => {
@@ -82,14 +88,28 @@ export const useMealStore = defineStore("meals", () => {
     })
   }
 
-  const getAreaList = async () => {
-    const areaList: string[] = []
+  const fetchByArea = () => {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        const response = await axios.get("/api/filter.php", {
+          params: { a: searchTerm.value },
+        })
+        if (response.data.meals == null) reject("No results")
+        else areaMeals.value["area" + searchTerm.value] = response.data.meals
+        resolve()
+      } catch (error) {
+        console.log(`Failed to fetch meals: ${error}`)
+        reject(error)
+      }
+    })
+  }
+
+  const setAreaList = async () => {
     await fetchList("area").then((data) => {
       data.forEach((area) => {
-        if (area.strArea) areaList.push(area.strArea)
+        if (area.strArea) areaList.value.push(area.strArea)
       })
     })
-    return areaList
   }
 
   // Create a better formatted list of ingredients
@@ -120,7 +140,9 @@ export const useMealStore = defineStore("meals", () => {
     fetchMealDetail,
     getIngredientsList,
     fetchList,
-    searchArea,
-    getAreaList,
+    setAreaList,
+    fetchByArea,
+    areaMeals,
+    areaList
   }
 })
