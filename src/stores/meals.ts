@@ -38,8 +38,8 @@ export const useMealStore = defineStore("meals", () => {
     searchBy: "search" | "area" | "categories" | "ingredients",
     forcedSearchTerm?: string | undefined
   ) => {
-    emptyResults.value = false
-    searchTerm.value = forcedSearchTerm ?? tempSearch.value
+    emptyResults.value = false // Reset search error
+    searchTerm.value = forcedSearchTerm ?? tempSearch.value // For custom searches
     if (searchBy == "search")
       await fetchSearchMeal().catch(() => {
         emptyResults.value = true
@@ -48,6 +48,7 @@ export const useMealStore = defineStore("meals", () => {
       await fetchFilter(searchBy).catch(() => {
         emptyResults.value = true
       })
+    // Scroll to results
     if (!emptyResults.value)
       document.getElementById("results")?.scrollIntoView({ behavior: "smooth" })
   }
@@ -89,11 +90,12 @@ export const useMealStore = defineStore("meals", () => {
     })
   }
 
+  // Fetches a list of possible areas, ingredients or categories
   const fetchList = <T extends keyof ILists>(fetchBy: T) => {
     return new Promise<ILists[T]>(async (resolve, reject) => {
       try {
         const response = await axios.get("/api/list.php", {
-          params: { [fetchBy[0]]: "list" },
+          params: { [fetchBy[0]]: "list" }, // fetchBy[0] because API asks for first letter (a, i, c)
         })
 
         resolve(response.data.meals)
@@ -104,11 +106,12 @@ export const useMealStore = defineStore("meals", () => {
     })
   }
 
+  // Fetches meals by areas, ingredients or categories
   const fetchFilter = (fetchBy: keyof ILists) => {
     return new Promise<void>(async (resolve, reject) => {
       try {
         const response = await axios.get("/api/filter.php", {
-          params: { [fetchBy[0]]: searchTerm.value },
+          params: { [fetchBy[0]]: searchTerm.value }, // fetchBy[0] because API asks for first letter (a, i, c)
         })
 
         if (response.data.meals == null) reject("No results")
@@ -121,6 +124,7 @@ export const useMealStore = defineStore("meals", () => {
     })
   }
 
+  // Set a better formatted list for meals filtered by areas, ingredients or categories
   const setFilterList = async (setBy: keyof ILists) => {
     if (filterList.value.length > 0) return
 

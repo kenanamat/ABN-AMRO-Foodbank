@@ -18,6 +18,7 @@ defineProps<{ meals: IMeal[] }>()
           :key="meal.idMeal"
           class="relative flex items-center space-x-4 bg-primary bg-opacity-20 focus-within:ring-1 focus-within:ring-secondary-hover hover:bg-opacity-30 transition-all"
         >
+          <!-- Image -->
           <div
             class="bg-primary bg-opacity-10 p-3 shadow-[1px_0px_10px_0px_rgba(0,0,0,0.1)]"
           >
@@ -28,6 +29,7 @@ defineProps<{ meals: IMeal[] }>()
               :alt="`Thumbnail of ${meal.strMeal}`"
             />
           </div>
+          <!-- Text -->
           <div class="min-w-0 flex-1">
             <router-link
               :to="`/meal/${meal.idMeal}`"

@@ -5,6 +5,8 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/vue/24/outline"
 import NavigationLogo from "./NavigationLogo.vue"
 
 const mobileMenuOpen = ref(false)
+
+const menuItems = ["area", "ingredients", "categories"]
 </script>
 
 <template>
@@ -29,7 +31,7 @@ const mobileMenuOpen = ref(false)
       <!-- Menu items -->
       <div class="hidden lg:flex lg:gap-x-12">
         <router-link
-          v-for="item in ['area', 'ingredients', 'categories']"
+          v-for="item in menuItems"
           :to="'/' + item"
           class="text-sm leading-6 text-primary hover:text-primary-hover font-semibold"
         >
@@ -64,7 +66,7 @@ const mobileMenuOpen = ref(false)
           <!-- Menu items -->
           <div class="-my-6">
             <router-link
-              v-for="item in ['area', 'ingredients', 'categories']"
+              v-for="item in menuItems"
               :to="'/' + item"
               class="-mx-3 block rounded-lg px-3 py-2.5 text-base leading-7 text-white"
             >
