@@ -17,7 +17,7 @@ mealStore.set3RandomMeals()
       <!-- Background image and overlap -->
       <div
         aria-hidden="true"
-        class="absolute inset-0 flex flex-col h-4/6 !min-h-[840px]"
+        class="absolute inset-0 flex flex-col h-4/6 !min-h-[800px]"
       >
         <div class="relative w-full flex-1">
           <div class="absolute inset-0 overflow-hidden opacity-30">
