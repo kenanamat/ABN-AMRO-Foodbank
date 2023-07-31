@@ -69,7 +69,8 @@ npm run test
 
 ## Architecture and Design Decisions
 
-- This project is built with **Vue**, a popular JavaScript framework for building interactive user interfaces, due to its component-based architecture, flexibility, and readability with script setup.
+This project is built with **Vue**, a popular JavaScript framework for building interactive user interfaces, due to its component-based architecture, flexibility, and readability with script setup.
+
 - **Vite** primarily for a faster startup.
 - **Pinia** is used for state management to handle the state of our application effectively.
 - **Vue-Router** is used to handle navigation on a single-page web application.
@@ -78,7 +79,7 @@ npm run test
 - **Vitest** and **happy-dom** for testing, Vitest was chosen because of it's seamless integration with Vite and Typescript. happy-dom was chosen because it has more documentation than jsdom...
 - **axios-mock-adapter** to help mocking API calls when testing.
 
-Tests are not kept in a separate folder, instead they are right next to the file they're testing. This helps
+Tests are not kept in a separate folder, instead they are right next to the file they're testing. This helps to keep up to date with test.
 
 The folder structure is kept extremely minimal and has no deeper layers. This is due to the scope of the project, where scalability is considered lightly. To keep some structure, components meant for a single page are named `PageNameComponentName.vue`. This also reduces the amount of keystrokes when using `ctrl + p`. The folders (and types) are organized as follows:
 
