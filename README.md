@@ -1,6 +1,14 @@
 # ABN AMRO FoodBank
 
 Welcome to FoodBank! This is a simple, user-friendly, single-page web application that allows users to browse and find their favorite recipes using the open API provided by TheMealDB.
+Your README file looks great! It's thorough and well-structured. However, there are a few improvements and additions you could consider:
+
+## Table of Contents
+
+- [Features](#features)
+- [Getting Started](#getting-started)
+- [Testing](#testing)
+- [Architecture and Design Decisions](#architecture-and-design-decisions)
 
 ## Features
 
@@ -61,7 +69,7 @@ The application should open in your default browser at `http://127.0.0.1:5173/`.
 
 ## Testing
 
-To run unit tests, open a separate terminal and type:
+To run unit tests, open a separate terminal and type. Vitest automatically checks for file changes, this way you're always testing while developing:
 
 ```sh
 npm run test
@@ -72,6 +80,7 @@ npm run test
 This project is built with **Vue**, a popular JavaScript framework for building interactive user interfaces, due to its component-based architecture, flexibility, and readability with script setup.
 
 - **Vite** primarily for a faster startup.
+- **TailwindCSS** is used for styling.
 - **Pinia** is used for state management to handle the state of our application effectively.
 - **Vue-Router** is used to handle navigation on a single-page web application.
 - **Axios** to make API calls simpler.
@@ -79,7 +88,8 @@ This project is built with **Vue**, a popular JavaScript framework for building 
 - **Vitest** and **happy-dom** for testing, Vitest was chosen because of it's seamless integration with Vite and Typescript. happy-dom was chosen because it has more documentation than jsdom...
 - **axios-mock-adapter** to help mocking API calls when testing.
 
-Tests are not kept in a separate folder, instead they are right next to the file they're testing. This helps to keep up to date with test.
+Tests are not kept in a separate `__tests__` folder, instead they are right next to the file they're testing. This helps to keep up to date with tests.
+There are limited tests due to time constraints. It should still give an idea on how testing would be done if expanded further. Preferably all components and pages would have their own test.
 
 The folder structure is kept extremely minimal and has no deeper layers. This is due to the scope of the project, where scalability is considered lightly. To keep some structure, components meant for a single page are named `PageNameComponentName.vue`. This also reduces the amount of keystrokes when using `ctrl + p`. The folders (and types) are organized as follows:
 
@@ -91,3 +101,5 @@ The folder structure is kept extremely minimal and has no deeper layers. This is
 - `src/types.d.ts`: Holds the types used in the project.
 
 For styles, I used **TailwindCSS**, as it allows CSS to be written at the elements themselves making development time a lot shorter. On top of this, they provide **TailwindUI**. A library with templates using Tailwind for both Vue and React, further reducing development time. These templates are kept consistently update to keep in line with the best practices in frontend development.
+
+For state management, I used **Pinia**, as it offers the same readability benefits as Vue's script setup. Other than that it's comparable to Vuex, allowing for function and state management across components. In this project I've only used a single store to reduce unnecessary complexity.
