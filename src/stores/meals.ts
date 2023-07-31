@@ -1,5 +1,5 @@
 import { defineStore } from "pinia"
-import { IMeal, ingredientsListItem } from "../types"
+import { ILists, IMeal, ingredientsListItem } from "../types"
 import { ref } from "vue"
 import axios from "axios"
 
@@ -11,7 +11,8 @@ export const useMealStore = defineStore("meals", () => {
     [term: string]: IMeal[]
   }>({})
 
-  const areaList = ref<string[]>([])
+  const filterList = ref<string[]>([])
+
   const randomMeals = ref<IMeal[]>([])
   const searchTerm = ref("")
   const tempSearch = ref("")
@@ -42,8 +43,8 @@ export const useMealStore = defineStore("meals", () => {
       await fetchSearchMeal().catch(() => {
         emptyResults.value = true
       })
-    if (searchBy == "area")
-      await fetchByArea().catch(() => {
+    else
+      await fetchFilter(searchBy).catch(() => {
         emptyResults.value = true
       })
     if (!emptyResults.value)
@@ -88,16 +89,11 @@ export const useMealStore = defineStore("meals", () => {
     })
   }
 
-  const fetchList = (listToFetch: "categories" | "area" | "ingredients") => {
-    return new Promise<IMeal[]>(async (resolve, reject) => {
+  const fetchList = <T extends keyof ILists>(fetchBy: T) => {
+    return new Promise<ILists[T]>(async (resolve, reject) => {
       try {
-        let param: { [key: string]: "list" } = {}
-
-        if (listToFetch == "categories") param = { c: "list" }
-        else if (listToFetch == "area") param = { a: "list" }
-        else if (listToFetch == "ingredients") param = { i: "list" }
         const response = await axios.get("/api/list.php", {
-          params: param,
+          params: { [fetchBy[0]]: "list" },
         })
 
         resolve(response.data.meals)
@@ -108,14 +104,15 @@ export const useMealStore = defineStore("meals", () => {
     })
   }
 
-  const fetchByArea = () => {
+  const fetchFilter = (fetchBy: keyof ILists) => {
     return new Promise<void>(async (resolve, reject) => {
       try {
         const response = await axios.get("/api/filter.php", {
-          params: { a: searchTerm.value },
+          params: { [fetchBy[0]]: searchTerm.value },
         })
+        
         if (response.data.meals == null) reject("No results")
-        else areaMeals.value["area" + searchTerm.value] = response.data.meals
+        else areaMeals.value[fetchBy + searchTerm.value] = response.data.meals
         resolve()
       } catch (error) {
         console.log(`Failed to fetch meals: ${error}`)
@@ -124,14 +121,32 @@ export const useMealStore = defineStore("meals", () => {
     })
   }
 
-  const setAreaList = async () => {
-    if (areaList.value.length > 0) return
-    await fetchList("area").then((data) => {
-      data.forEach((area) => {
-        if (area.strArea) areaList.value.push(area.strArea)
-      })
+  const setFilterList = async (setBy: keyof ILists) => {
+    if (filterList.value.length > 0) return
+
+    await fetchList(setBy).then((data) => {
+      if (setBy === "area") {
+        data.forEach((item) => {
+          if ("strArea" in item) {
+            filterList.value.push(item.strArea)
+          }
+        })
+      } else if (setBy === "ingredients") {
+        data.forEach((item) => {
+          if ("strIngredient" in item) {
+            filterList.value.push(item.strIngredient)
+          }
+        })
+      } else if (setBy === "categories") {
+        data.forEach((item) => {
+          if ("strCategory" in item) {
+            filterList.value.push(item.strCategory)
+          }
+        })
+      }
     })
-    areaList.value.sort()
+
+    filterList.value.sort()
   }
 
   // Create a better formatted list of ingredients
@@ -162,12 +177,12 @@ export const useMealStore = defineStore("meals", () => {
     fetchMealDetail,
     getIngredientsList,
     fetchList,
-    setAreaList,
-    fetchByArea,
+    fetchFilter,
     areaMeals,
-    areaList,
     tempSearch,
     initSearch,
     emptyResults,
+    filterList,
+    setFilterList,
   }
 })

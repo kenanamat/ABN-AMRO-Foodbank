@@ -7,19 +7,17 @@ import Button from "../components/Button.vue"
 import { computed } from "vue"
 import AreaSelection from "../components/AreaSelection.vue"
 import Loader from "../components/Loader.vue"
+import { ILists } from "../types"
 
 const mealStore = useMealStore()
 
-const searchBy = useRoute().path.split("/")[1]
-if (searchBy == "area") mealStore.setAreaList()
+const searchBy = useRoute().path.split("/")[1] as keyof ILists
+mealStore.setFilterList(searchBy as keyof ILists)
 
 const list = computed(() => {
-  if (searchBy == "area") {
-    return mealStore.areaList.filter((item) =>
-      item.toLowerCase().includes(mealStore.tempSearch.toLowerCase())
-    )
-  }
-  return []
+  return mealStore.filterList.filter((item) =>
+    item.toLowerCase().includes(mealStore.tempSearch.toLowerCase())
+  )
 })
 const listByLetter = (letter: string) => {
   if (!list.value) return []
@@ -34,7 +32,7 @@ const alphabet = "abcdefghijklmnopqrstuvwxyz".split("")
       <h1 class="text-white text-4xl">Search by {{ searchBy }}:</h1>
       <SearchForm
         :forced-search-term="list.length == 1 ? list[0] : undefined"
-        search-by="area"
+        :search-by="searchBy"
       />
     </section>
   </div>
@@ -67,7 +65,7 @@ const alphabet = "abcdefghijklmnopqrstuvwxyz".split("")
                   class="relative flex first-of-type:mt-0 mt-2"
                 >
                   <Button
-                    @click="mealStore.initSearch('area', item)"
+                    @click="mealStore.initSearch(searchBy, item)"
                     class="min-w-0 rounded-none flex-1 text-sm bg-primary bg-opacity-20 focus-within:ring-1 focus-within:ring-secondary-hover hover:bg-opacity-30 transition-all"
                   >
                     {{ item }}
@@ -79,7 +77,7 @@ const alphabet = "abcdefghijklmnopqrstuvwxyz".split("")
         </ul>
       </section>
     </Transition>
-    <section class="py-12" v-else-if="mealStore.areaList.length == 0">
+    <section class="py-12" v-else-if="mealStore.filterList.length == 0">
       <Loader />
     </section>
     <section class="py-12" v-else>
@@ -102,7 +100,10 @@ const alphabet = "abcdefghijklmnopqrstuvwxyz".split("")
         alt="World map"
         class="max-h-[70vh] filter contrast-50 mx-auto"
       />
-      <AreaSelection :areas="mealStore.areaList" :key="mealStore.searchTerm" />
+      <AreaSelection
+        :areas="mealStore.filterList"
+        :key="mealStore.searchTerm"
+      />
     </div>
   </Transition>
   <MealResults :meals="mealStore.areaMeals[searchBy + mealStore.searchTerm]" />

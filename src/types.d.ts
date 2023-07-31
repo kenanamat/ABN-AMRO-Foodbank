@@ -3,6 +3,19 @@ export interface ingredientsListItem {
   measure: string
 }
 
+export interface ILists {
+  area: [{ strArea: string }]
+  categories: [{ strCategory: string }]
+  ingredients: [
+    {
+      idIngredient: string
+      strIngredient: string
+      strDescription: string | null
+      strType: string | null
+    }
+  ]
+}
+
 export interface ISearchResponse {
   meals: IMeal[]
 }
